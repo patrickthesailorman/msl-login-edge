@@ -29,4 +29,14 @@ public class StubCatalogService
             .getAuthenticated())));
     }
 
+    /**
+     * TODO
+     *
+     * @param email String
+     * @return Observable<Void>
+     */
+    public Observable<Void> resetPassword(String email) {
+        return Observable.empty();
+    }
+
 }

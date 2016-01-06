@@ -1,13 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>msl-login-edge</groupId>
+    <groupId>msl.server</groupId>
     <artifactId>msl-login-edge</artifactId>
     <packaging>jar</packaging>
-    <version>4.0.0</version>
+    <version>${msl-server.version}</version>
 
     <profiles>
-
         <profile>
             <id>build</id>
             <activation>
@@ -19,15 +18,13 @@
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec-maven-plugin.version}</version>
-
                         <executions>
-                            <!-- PARSE SWAGGER SOURCE FILE -->
                             <execution>
                                 <id>npm run parse-login-edge-src</id>
                                 <goals>
                                     <goal>exec</goal>
                                 </goals>
-                                <phase>clean</phase>
+                                <phase>pre-clean</phase>
                                 <configuration>
                                     <executable>npm</executable>
                                     <workingDirectory>../../client</workingDirectory>
@@ -51,13 +48,13 @@
                                         <argument>-XX:MaxPermSize=256M</argument>
                                         <argument>-Xmx1024M</argument>
 
+                                        <!--Selectively generate api objects-->
                                         <argument>-Dapis</argument>
 
                                         <argument>-jar</argument>
                                         <argument>${swagger-codegen-cli-jar}</argument>
 
                                         <argument>generate</argument>
-
                                         <!--Yaml swagger specification file-->
                                         <argument>-i</argument>
                                         <argument>${yaml-spec}</argument>
@@ -76,7 +73,6 @@
                             </execution>
                         </executions>
                     </plugin>
-
                 </plugins>
             </build>
         </profile>
@@ -88,35 +84,6 @@
             </activation>
             <build>
                 <plugins>
-                    <plugin>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <version>${maven-failsafe-plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>integration-test</goal>
-                                    <goal>verify</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>${maven-surefire-plugin.version}</version>
-                        <dependencies>
-                            <dependency>
-                                <groupId>org.apache.maven.surefire</groupId>
-                                <artifactId>surefire-junit47</artifactId>
-                                <version>${surefire-junit47.version}</version>
-                            </dependency>
-                        </dependencies>
-                        <configuration>
-                            <testFailureIgnore>true</testFailureIgnore>
-                            <include>**/*Test.java</include>
-                        </configuration>
-                    </plugin>
-
                     <plugin>
                         <groupId>org.eclipse.jetty</groupId>
                         <artifactId>jetty-maven-plugin</artifactId>
@@ -156,36 +123,34 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>build-helper-maven-plugin</artifactId>
-                        <version>${build-helper-maven-plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <id>add-source</id>
-                                <phase>generate-sources</phase>
-                                <goals>
-                                    <goal>add-source</goal>
-                                </goals>
-                                <configuration>
-                                    <sources>
-                                        <source>src/main/java</source>
-                                        <source>src/gen/java</source>
-                                    </sources>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
 
                 </plugins>
             </build>
         </profile>
-
     </profiles>
-
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>${build-helper-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/main/java</source>
+                                <source>src/gen/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -202,7 +167,7 @@
                 <version>${maven-war-plugin.version}</version>
             </plugin>
 
-            <!-- JAVA CODE FORMATTER -->
+            <!-- FORMATTER -->
             <plugin>
                 <groupId>net.revelc.code</groupId>
                 <artifactId>formatter-maven-plugin</artifactId>
@@ -233,11 +198,43 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- TESTING -->
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven-failsafe-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.surefire</groupId>
+                        <artifactId>surefire-junit47</artifactId>
+                        <version>${surefire-junit47.version}</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <testFailureIgnore>true</testFailureIgnore>
+                    <include>**/*Test.java</include>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 
     <reporting>
         <plugins>
+            <!-- COVERAGE REPORT -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
@@ -259,12 +256,32 @@
     </dependencyManagement>
 
     <dependencies>
+        <!-- LOGGER -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j-version}</version>
+        </dependency>
+
+        <!-- JERSEY -->
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
             <artifactId>jersey-container-servlet-core</artifactId>
             <!-- use the following artifactId if you don't need servlet 2.x compatibility -->
             <!-- artifactId>jersey-container-servlet</artifactId -->
         </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+        </dependency>
+        <!-- API -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>${servlet-api-version}</version>
+        </dependency>
+
+        <!-- SWAGGER -->
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-codegen-maven-plugin</artifactId>
@@ -275,26 +292,19 @@
             <artifactId>swagger-jersey-jaxrs</artifactId>
             <version>${swagger-core-version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${slf4j-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>${servlet-api-version}</version>
-        </dependency>
+
+        <!-- NETFLIX -->
         <dependency>
             <groupId>com.netflix.rxjava</groupId>
             <artifactId>rxjava-core</artifactId>
             <version>${rxjava-core.version}</version>
         </dependency>
+
+        <!-- CASSANDRA RELATED DEPENDENCIES-->
         <dependency>
             <groupId>com.datastax.cassandra</groupId>
             <artifactId>cassandra-driver-core</artifactId>
             <version>${cassandra-driver-core.version}</version>
-
         </dependency>
         <dependency>
             <groupId>com.datastax.cassandra</groupId>
@@ -302,6 +312,19 @@
             <version>${cassandra-driver-core.version}</version>
         </dependency>
 
+        <!-- REST EASY -->
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-client</artifactId>
+            <version>${resteasy-client}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jackson2-provider</artifactId>
+            <version>${org-jboss-resteasy.version}</version>
+        </dependency>
+
+        <!-- TESTING -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -311,12 +334,6 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>${mockito-version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-client</artifactId>
-            <version>${resteasy-client}</version>
         </dependency>
 
         <dependency>
@@ -346,11 +363,7 @@
             </exclusions>
         </dependency>
 
-        <dependency>
-            <groupId>org.glassfish.jersey.core</groupId>
-            <artifactId>jersey-client</artifactId>
-        </dependency>
-
+        <!-- FORMATTER -->
         <dependency>
             <groupId>net.revelc.code</groupId>
             <artifactId>formatter-maven-plugin</artifactId>
@@ -363,10 +376,16 @@
             <version>${maven-java-formatter-plugin.version}</version>
         </dependency>
 
+        <!-- MSL SERVER -->
         <dependency>
-            <groupId>msl.models</groupId>
-            <artifactId>models</artifactId>
-            <version>1.0.0</version>
+            <groupId>msl.server</groupId>
+            <artifactId>msl-common</artifactId>
+            <version>${msl-server.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>msl.server</groupId>
+            <artifactId>msl-account-data-client</artifactId>
+            <version>${msl-server.version}</version>
         </dependency>
 
     </dependencies>
@@ -382,35 +401,43 @@
     </repositories>
 
     <properties>
-
         <swagger-codegen-cli-jar>../../common/swagger-codegen-cli.jar</swagger-codegen-cli-jar>
         <output-directory>../msl-login-edge</output-directory>
         <yaml-spec>../../client/swagger/api/swagger/swagger.yaml</yaml-spec>
         <json-configuration-file>../../client/swagger/package.json</json-configuration-file>
 
+        <maven-install-plugin.version>2.5.1</maven-install-plugin.version>
         <exec-maven-plugin.version>1.3.2</exec-maven-plugin.version>
+
+        <slf4j-version>1.6.3</slf4j-version>
+        <build-helper-maven-plugin.version>1.9.1</build-helper-maven-plugin.version>
         <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
-        <maven-surefire-plugin.version>2.19</maven-surefire-plugin.version>
         <maven-war-plugin.version>2.1.1</maven-war-plugin.version>
-        <maven-failsafe-plugin.version>2.6</maven-failsafe-plugin.version>
-        <maven-surefire-report-plugin.version>2.19</maven-surefire-report-plugin.version>
+
         <swagger-core-version>1.5.4</swagger-core-version>
         <swagger-codegen-maven-plugin.version>2.1.4</swagger-codegen-maven-plugin.version>
-        <surefire-junit47.version>2.19</surefire-junit47.version>
-        <testng.version>6.8.8</testng.version>
-        <build-helper-maven-plugin.version>1.9.1</build-helper-maven-plugin.version>
+
         <jetty-version>9.2.9.v20150224</jetty-version>
-        <slf4j-version>1.6.3</slf4j-version>
-        <junit-version>4.10</junit-version>
         <servlet-api-version>2.5</servlet-api-version>
         <jersey.version>2.4.1</jersey.version>
         <resteasy-client>3.0.2.Final</resteasy-client>
+        <org-jboss-resteasy.version>3.0.13.Final</org-jboss-resteasy.version>
+
         <rxjava-core.version>0.20.7</rxjava-core.version>
         <cassandra-driver-core.version>2.1.9</cassandra-driver-core.version>
+
+        <junit-version>4.10</junit-version>
+        <maven-surefire-plugin.version>2.19</maven-surefire-plugin.version>
+        <surefire-junit47.version>2.19</surefire-junit47.version>
+        <testng.version>6.8.8</testng.version>
+        <maven-failsafe-plugin.version>2.6</maven-failsafe-plugin.version>
+        <maven-surefire-report-plugin.version>2.19</maven-surefire-report-plugin.version>
         <mockito-version>1.9.5</mockito-version>
-        <org-jboss-resteasy.version>3.0.13.Final</org-jboss-resteasy.version>
+
         <formatter-maven-plugin.version>0.5.2</formatter-maven-plugin.version>
         <maven-java-formatter-plugin.version>0.4</maven-java-formatter-plugin.version>
+
+        <msl-server.version>1.0.0</msl-server.version>
     </properties>
 
 </project>

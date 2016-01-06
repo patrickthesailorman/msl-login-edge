@@ -15,4 +15,6 @@ public interface AuthenticationService {
      */
     Observable<Optional<UUID>> logIn(String email, String password);
 
+    Observable<Void> resetPassword(String email);
+
 }
