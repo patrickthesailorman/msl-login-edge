@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 public class MslApiServiceImpl extends MslApiService {
 
     private AuthenticationService authenticationServiceService = new CassandraAuthenticationService();
+    private MslSessionToken mslSessionToken = MslSessionToken.getInstance();
 
     @Override
     public Response login(String email, String password) throws NotFoundException {
@@ -55,7 +56,7 @@ public class MslApiServiceImpl extends MslApiService {
         LoginSuccessResponse loginSuccessResponse = new LoginSuccessResponse();
         loginSuccessResponse.setAuthenticated(new Date().toString());
 
-        return Response.ok().cookie(MslSessionToken.getInstance().getSessionCookie(optSessionToken.get()))
+        return Response.ok().cookie(mslSessionToken.getSessionCookie(optSessionToken.get()))
                 .entity(new MslApiResponseMessage(MslApiResponseMessage.OK, "success", loginSuccessResponse)).build();
     }
 
@@ -64,7 +65,7 @@ public class MslApiServiceImpl extends MslApiService {
         StatusResponse response = new StatusResponse();
         response.setMessage("Successfully logged out");
 
-        return Response.ok().cookie(MslSessionToken.getInstance().getSessionCookie(null))
+        return Response.ok().cookie(mslSessionToken.getSessionCookie(null))
                 .entity(new MslApiResponseMessage(MslApiResponseMessage.OK, "success", response)).build();
     }
 
