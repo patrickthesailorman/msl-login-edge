@@ -22,6 +22,24 @@ To format code
 mvn clean formatter:format
 ```
 
+### Install dependencies without running tests 
+```
+mvn -P no-test clean install
+```
+
+##Reports
+###Surefire reports:
+```
+mvn site
+```
+report gets generated under /target/site/index.html
+ 
+###Cobertura
+```
+mvn cobertura:cobertura
+```
+report gets generated under /target/site/cobertura/index.html
+
 ## Some dependencies required installation before running
 - msl-models
 - msl-account-data-client
