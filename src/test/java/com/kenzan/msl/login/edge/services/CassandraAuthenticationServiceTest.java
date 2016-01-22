@@ -72,5 +72,4 @@ public class CassandraAuthenticationServiceTest {
         EasyMock.expect(cassandraAccountService.getUser(EasyMock.anyString())).andReturn(Observable.just(tc.USER_DAO));
 
     }
-
 }
