@@ -11,7 +11,8 @@ import java.util.UUID;
 import rx.Observable;
 
 /**
- * Implementation of the CassandraAuthenticationService interface that retrieves its data from a Cassandra cluster.
+ * Implementation of the CassandraAuthenticationService interface that retrieves its data from a
+ * Cassandra cluster.
  */
 public class CassandraAuthenticationService
     implements AuthenticationService {
@@ -49,9 +50,10 @@ public class CassandraAuthenticationService
     private Optional<UUID> authenticate(String username, String password) {
         UserDao user = cassandraAccountService.getUser(username).toBlocking().first();
 
-        if(user.getPassword().equals(password)) {
+        if ( user.getPassword().equals(password) ) {
             return Optional.of(user.getUserId());
-        } else {
+        }
+        else {
             return Optional.absent();
         }
     }

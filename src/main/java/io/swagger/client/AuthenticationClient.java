@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 
 public class AuthenticationClient {
 
-    private String baseUrl = "http://local.msl.dev:9000/msl";
+    private String baseUrl = "http://local.msl.dev:9001/msl";
     private ResteasyClient client;
 
     public AuthenticationClient() {
