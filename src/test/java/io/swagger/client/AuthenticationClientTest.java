@@ -1,6 +1,6 @@
 package io.swagger.client;
 
-import io.swagger.api.impl.MslApiResponseMessage;
+import io.swagger.api.impl.LoginEdgeApiResponseMessage;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.Before;
@@ -26,7 +26,7 @@ public class AuthenticationClientTest {
     @Test
     public void testLogin() {
         logger.debug("AuthenticationClient.testLogin");
-        MslApiResponseMessage response = authenticationClient.login(MOCK_EMAIL, MOCK_PASSWORD);
+        LoginEdgeApiResponseMessage response = authenticationClient.login(MOCK_EMAIL, MOCK_PASSWORD);
         assertNotNull(response);
         assertEquals("login call is successful", "success", response.getMessage());
     }
@@ -34,7 +34,7 @@ public class AuthenticationClientTest {
     @Test
     public void testLogOut() {
         logger.debug("AuthenticationClient.testLogOut");
-        MslApiResponseMessage response = authenticationClient.logOut();
+        LoginEdgeApiResponseMessage response = authenticationClient.logOut();
         logger.info(response);
         assertNotNull(response);
         assertEquals("logout call is successful", "success", response.getMessage());
