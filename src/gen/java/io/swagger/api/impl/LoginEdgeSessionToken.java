@@ -6,19 +6,19 @@ import javax.ws.rs.core.NewCookie;
 import java.util.Date;
 import java.util.UUID;
 
-public class MslSessionToken {
+public class LoginEdgeSessionToken {
 
-    private static MslSessionToken mslSessionToken = null;
+    private static LoginEdgeSessionToken loginEdgeSessionToken = null;
 
     private String tokenValue;
 
-    private MslSessionToken () {}
+    private LoginEdgeSessionToken() {}
 
-    public static MslSessionToken getInstance () {
-        if (mslSessionToken == null) {
-            mslSessionToken = new MslSessionToken( );
+    public static LoginEdgeSessionToken getInstance () {
+        if (loginEdgeSessionToken == null) {
+            loginEdgeSessionToken = new LoginEdgeSessionToken( );
         }
-        return mslSessionToken;
+        return loginEdgeSessionToken;
     }
 
     /**
@@ -54,9 +54,9 @@ public class MslSessionToken {
     }
 
     /**
-     * Returns the sessionToken in a cookie format, if a sessionToken is passed it updates the MslSessionToken value with it
+     * Returns the sessionToken in a cookie format, if a sessionToken is passed it updates the LoginEdgeSessionToken value with it
      *
-     * @param sessionToken value to update MslSessionToken.value with
+     * @param sessionToken value to update LoginEdgeSessionToken.value with
      * @return NewCookie
      */
     public NewCookie getSessionCookie(UUID sessionToken) {

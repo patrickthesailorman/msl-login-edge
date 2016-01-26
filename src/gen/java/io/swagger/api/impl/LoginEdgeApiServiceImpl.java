@@ -8,16 +8,22 @@ import io.swagger.api.*;
 import io.swagger.model.LoginSuccessResponse;
 import io.swagger.model.ErrorResponse;
 import io.swagger.model.StatusResponse;
+
 import java.util.Date;
+
+import io.swagger.api.NotFoundException;
+
 import java.util.UUID;
+
 import org.apache.commons.lang3.StringUtils;
+
 import javax.ws.rs.core.Response;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JaxRSServerCodegen", date = "2015-12-28T15:59:58.895-06:00")
-public class MslApiServiceImpl extends MslApiService {
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JaxRSServerCodegen", date = "2016-01-25T12:48:15.318-06:00")
+public class LoginEdgeApiServiceImpl extends LoginEdgeApiService {
 
     private AuthenticationService authenticationServiceService = new CassandraAuthenticationService();
-    private MslSessionToken mslSessionToken = MslSessionToken.getInstance();
+    private LoginEdgeSessionToken loginEdgeSessionToken = LoginEdgeSessionToken.getInstance();
 
     @Override
     public Response login(String email, String password) throws NotFoundException {
@@ -25,13 +31,13 @@ public class MslApiServiceImpl extends MslApiService {
         if ( StringUtils.isEmpty(email) ) {
             return Response
                     .status(Response.Status.BAD_REQUEST)
-                    .entity(new MslApiResponseMessage(MslApiResponseMessage.ERROR,
+                    .entity(new LoginEdgeApiResponseMessage(LoginEdgeApiResponseMessage.ERROR,
                             "Required parameter 'email' is null or empty.")).build();
         }
         if ( StringUtils.isEmpty(password) ) {
             return Response
                     .status(Response.Status.BAD_REQUEST)
-                    .entity(new MslApiResponseMessage(MslApiResponseMessage.ERROR,
+                    .entity(new LoginEdgeApiResponseMessage(LoginEdgeApiResponseMessage.ERROR,
                             "Required parameter 'password' is null or empty.")).build();
         }
 
@@ -56,8 +62,8 @@ public class MslApiServiceImpl extends MslApiService {
         LoginSuccessResponse loginSuccessResponse = new LoginSuccessResponse();
         loginSuccessResponse.setAuthenticated(new Date().toString());
 
-        return Response.ok().cookie(mslSessionToken.getSessionCookie(optSessionToken.get()))
-                .entity(new MslApiResponseMessage(MslApiResponseMessage.OK, "success", loginSuccessResponse)).build();
+        return Response.ok().cookie(loginEdgeSessionToken.getSessionCookie(optSessionToken.get()))
+                .entity(new LoginEdgeApiResponseMessage(LoginEdgeApiResponseMessage.OK, "success", loginSuccessResponse)).build();
     }
 
     @Override
@@ -65,8 +71,8 @@ public class MslApiServiceImpl extends MslApiService {
         StatusResponse response = new StatusResponse();
         response.setMessage("Successfully logged out");
 
-        return Response.ok().cookie(mslSessionToken.getSessionCookie(null))
-                .entity(new MslApiResponseMessage(MslApiResponseMessage.OK, "success", response)).build();
+        return Response.ok().cookie(loginEdgeSessionToken.getSessionCookie(null))
+                .entity(new LoginEdgeApiResponseMessage(LoginEdgeApiResponseMessage.OK, "success", response)).build();
     }
 
     @Override
@@ -74,12 +80,12 @@ public class MslApiServiceImpl extends MslApiService {
             throws NotFoundException {
         // Validate required parameters
         if (StringUtils.isEmpty(email)) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(new MslApiResponseMessage(MslApiResponseMessage.ERROR, "Required parameter 'email' is null or empty.")).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(new LoginEdgeApiResponseMessage(LoginEdgeApiResponseMessage.ERROR, "Required parameter 'email' is null or empty.")).build();
         }
 
         // do some magic!
         return Response.ok()
-                .entity(new MslApiResponseMessage(MslApiResponseMessage.OK, "magic!")).build();
+                .entity(new LoginEdgeApiResponseMessage(LoginEdgeApiResponseMessage.OK, "magic!")).build();
     }
   
 }
