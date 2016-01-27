@@ -53,8 +53,7 @@ public class CassandraAuthenticationService
         if ( user.getPassword().equals(password) ) {
             return Optional.of(user.getUserId());
         }
-        else {
-            return Optional.absent();
-        }
+        
+		return Optional.absent();
     }
 }
