@@ -62,7 +62,7 @@ public class LoginEdgeSessionToken {
     public NewCookie getSessionCookie(UUID sessionToken) {
 
         final String PATH = "/";
-        final String DOMAIN = "local.msl.dev";
+        final String DOMAIN = "msl.kenzanlabs.com";
         final int VERSION = 1;
         final String COMMENT = "";
         int MAX_AGE;
