@@ -32,13 +32,13 @@ mvn -P no-test clean install
 ```
 mvn site
 ```
-report gets generated under /target/site/index.html
+report gets generated under `/target/site/index.html`
  
 ###Cobertura
 ```
 mvn cobertura:cobertura
 ```
-report gets generated under /target/site/cobertura/index.html
+report gets generated under `/target/site/cobertura/index.html`
 
 ## Some dependencies required installation before running
 - msl-models

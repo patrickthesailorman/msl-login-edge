@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 
 public class AuthenticationClient {
 
-    private String baseUrl = "http://local.msl.dev:9001/msl";
+    private String baseUrl = "http://msl.kenzanlabs.com:9001";
     private ResteasyClient client;
 
     public AuthenticationClient() {
@@ -20,7 +20,7 @@ public class AuthenticationClient {
     }
 
     public LoginEdgeApiResponseMessage login(String email, String password) {
-        ResteasyWebTarget target = client.target(baseUrl + "/v1/loginedge/login");
+        ResteasyWebTarget target = client.target(baseUrl + "/login-edge/login");
 
         Form form = new Form();
         form.param("email", email);
@@ -35,7 +35,7 @@ public class AuthenticationClient {
     }
 
     public LoginEdgeApiResponseMessage logOut() {
-        ResteasyWebTarget target = client.target(baseUrl + "/v1/loginedge/logout");
+        ResteasyWebTarget target = client.target(baseUrl + "/login-edge/logout");
         Response response = target.request(MediaType.APPLICATION_JSON_TYPE)
             .post(Entity.entity("", MediaType.APPLICATION_JSON));
         if ( response.getStatus() != 200 ) {
