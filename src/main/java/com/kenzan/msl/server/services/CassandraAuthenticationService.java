@@ -4,7 +4,7 @@
 package com.kenzan.msl.server.services;
 
 import com.google.common.base.Optional;
-import com.kenzan.msl.account.client.dao.UserDao;
+import com.kenzan.msl.account.client.dto.UserDto;
 import com.kenzan.msl.account.client.services.CassandraAccountService;
 
 import java.util.UUID;
@@ -48,7 +48,7 @@ public class CassandraAuthenticationService
      * @return Optional UUID
      */
     private Optional<UUID> authenticate(String username, String password) {
-        UserDao user = cassandraAccountService.getUser(username).toBlocking().first();
+        UserDto user = cassandraAccountService.getUser(username).toBlocking().first();
 
         if ( user.getPassword().equals(password) ) {
             return Optional.of(user.getUserId());
