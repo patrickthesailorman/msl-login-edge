@@ -1,5 +1,7 @@
 package io.swagger.client;
 
+import com.netflix.config.DynamicPropertyFactory;
+import com.netflix.config.DynamicStringProperty;
 import io.swagger.api.impl.LoginEdgeApiResponseMessage;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
@@ -12,11 +14,22 @@ import javax.ws.rs.core.Response;
 
 public class AuthenticationClient {
 
-    private String baseUrl = "http://msl.kenzanlabs.com:9001";
+    private static final String DEFAULT_BASE_URL = "http://msl.kenzanlabs.com:9001";
+
+    private String baseUrl;
     private ResteasyClient client;
 
     public AuthenticationClient() {
         client = new ResteasyClientBuilder().build();
+
+        String configUrl = "file://" + System.getProperty("user.dir");
+        configUrl += "/../msl-login-edge-config/archaius-config.properties";
+        String additionalUrlsProperty = "archaius.configurationSource.additionalUrls";
+        System.setProperty(additionalUrlsProperty, configUrl);
+
+        DynamicPropertyFactory propertyFactory = DynamicPropertyFactory.getInstance();
+        DynamicStringProperty fetchedBaseUrl = propertyFactory.getStringProperty("base_url", DEFAULT_BASE_URL);
+        baseUrl = fetchedBaseUrl.getValue();
     }
 
     public LoginEdgeApiResponseMessage login(String email, String password) {
