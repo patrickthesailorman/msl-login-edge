@@ -4,7 +4,7 @@
     <groupId>msl.server</groupId>
     <artifactId>msl-login-edge</artifactId>
     <packaging>jar</packaging>
-    <version>${msl-server.version}</version>
+    <version>1.0.0</version>
 
     <profiles>
         <profile>
@@ -241,7 +241,7 @@
                 </dependencies>
                 <configuration>
                     <testFailureIgnore>true</testFailureIgnore>
-                    <include>**/*Test.java</include>
+                    <!--<include>**/*Test.java</include>-->
                 </configuration>
             </plugin>
 
@@ -255,8 +255,7 @@
                             <ignore>io.swagger.api.*</ignore>
                         </ignores>
                         <excludes>
-                            <!--<exclude>com/example/dullcode/**/*.class</exclude>-->
-                            <!--<exclude>com/example/**/*Test.class</exclude>-->
+                            <exclude>**/*Test.class</exclude>
                         </excludes>
                     </instrumentation>
                 </configuration>
@@ -264,6 +263,31 @@
                     <execution>
                         <goals>
                             <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.4.1</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>io.swagger.api.impl.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -319,6 +343,12 @@
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.owlike</groupId>
+            <artifactId>genson</artifactId>
+            <version>0.99</version>
         </dependency>
 
         <!-- API -->
@@ -408,7 +438,6 @@
             <groupId>com.netflix.governator</groupId>
             <artifactId>governator</artifactId>
             <version>${karyon-governator.version}</version>
-            <!--<scope>runtime</scope>-->
         </dependency>
 
         <!-- JETTY -->
