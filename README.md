@@ -7,9 +7,9 @@ is an example of building a swagger-enabled JAX-RS server.
 
 This example uses the [JAX-RS](https://jax-rs-spec.java.net/) framework.
 
-To generate sources from swagger spec
+To generate sources from swagger generated code 
 ```
-mvn -P build clean generate-sources
+mvn -P build clean
 ```
 
 To run the server, please execute the following:
@@ -24,7 +24,12 @@ mvn clean formatter:format
 
 ### Install dependencies without running tests 
 ```
-mvn -P no-test clean install
+mvn -P no-tests clean install
+```
+
+### RPM packaging
+```
+mvn -P no-tests package && mvn rpm:rpm
 ```
 
 ##Reports
