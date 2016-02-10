@@ -10,14 +10,22 @@ public class LogInMockData {
     LoginSuccessResponse loginMockData = new LoginSuccessResponse();
 
     /**
-     * @param email the email address associated with the user account
-     * @param password the clear text, case-sensitive password for the user account
+     * Mocks a success login
+     *
+     * @param email String
+     * @param password String
+     * @return LoginSuccessResponse
      */
     public LoginSuccessResponse getAuthenticatedFlag(String email, String password) {
         loginMockData.setAuthenticated(Long.toString(new Date().getTime()));
         return loginMockData;
     }
 
+    /**
+     * Mocks the logout action
+     *
+     * @return StatusResponse
+     */
     public StatusResponse logOut() {
         StatusResponse response = new StatusResponse();
         response.setMessage("Successfully logged out");
