@@ -13,6 +13,8 @@ Run the build maven script to generate swagger generated code, package local jar
 mvn -f build-pom.xml install
 ```
 
+## Useful commands
+
 To generate sources from swagger spec
 ```
 mvn -P build clean generate-sources
@@ -50,6 +52,12 @@ report gets generated under `/target/site/index.html`
 mvn cobertura:cobertura
 ```
 report gets generated under `/target/site/cobertura/index.html`
+
+###EclEmma 
+```
+mvn package
+```
+report gets generated under `/target/site/jacoco`
 
 ## Some dependencies required installation before running
 - msl-models
