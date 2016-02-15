@@ -23,7 +23,7 @@ public class AuthenticationClient {
         client = new ResteasyClientBuilder().build();
 
         String configUrl = "file://" + System.getProperty("user.dir");
-        configUrl += "/../msl-login-edge-config/archaius-config.properties";
+        configUrl += "/../msl-login-edge-config/edge-config.properties";
         String additionalUrlsProperty = "archaius.configurationSource.additionalUrls";
         System.setProperty(additionalUrlsProperty, configUrl);
 
