@@ -1,7 +1,8 @@
-package io.swagger.api.impl;
+package com.kenzan.msl.server;
 
 import com.netflix.governator.annotations.Modules;
 import io.swagger.api.LoginEdgeApi;
+import io.swagger.api.impl.LoginEdgeApiOriginFilter;
 import netflix.adminresources.resources.KaryonWebAdminModule;
 import netflix.karyon.KaryonBootstrap;
 import netflix.karyon.ShutdownModule;
