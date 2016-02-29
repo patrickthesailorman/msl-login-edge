@@ -22,7 +22,7 @@ public class StubCatalogService
      *
      * @param email user email
      * @param password user password
-     * @return Observable<Optional<UUID>>
+     * @return Observable&lt;Optional&lt;UUID&gt;&gt;
      */
     public Observable<Optional<UUID>> logIn(String email, String password) {
         return Observable.just(Optional.of(UUID.fromString(logInMockData.getAuthenticatedFlag(email, password)
@@ -31,9 +31,9 @@ public class StubCatalogService
 
     /**
      * TODO
-     *
+     * 
      * @param email String
-     * @return Observable<Void>
+     * @return Observable&lt;Void&gt;
      */
     public Observable<Void> resetPassword(String email) {
         return Observable.empty();
