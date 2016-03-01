@@ -24,7 +24,7 @@ public class CassandraAuthenticationService
      *
      * @param email user email
      * @param password user password
-     * @return Observable<UUID>
+     * @return Observable&lt;UUID&gt;
      */
     public Observable<Optional<UUID>> logIn(String email, String password) {
         return Observable.just(authenticate(email, password));
@@ -34,7 +34,7 @@ public class CassandraAuthenticationService
      * TODO
      *
      * @param email String
-     * @return Observable<Void>
+     * @return Observable&lt;Void&gt;
      */
     public Observable<Void> resetPassword(String email) {
         return Observable.empty();
@@ -45,7 +45,7 @@ public class CassandraAuthenticationService
      *
      * @param username user email
      * @param password user password
-     * @return Optional UUID
+     * @return Optional&lt;UUID&gt;
      */
     private Optional<UUID> authenticate(String username, String password) {
         UserDto user = cassandraAccountService.getUser(username).toBlocking().first();
