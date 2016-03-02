@@ -21,63 +21,58 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({CassandraAccountService.class})
+@PrepareForTest({ CassandraAccountService.class })
 public class CassandraAuthenticationServiceTest {
 
-  private TestConstants tc = TestConstants.getInstance();
-  private CassandraAccountService cassandraAccountService;
+    private TestConstants tc = TestConstants.getInstance();
+    private CassandraAccountService cassandraAccountService;
 
-  @Before
-  public void init() throws Exception {
+    @Before
+    public void init()
+        throws Exception {
 
-    PowerMock.mockStatic(CassandraAccountService.class);
-    cassandraAccountService = EasyMock.createMock(CassandraAccountService.class);
-    PowerMock.expectNew(CassandraAccountService.class).andReturn(cassandraAccountService);
-    EasyMock.expect(CassandraAccountService.getInstance()).andReturn(cassandraAccountService)
-        .anyTimes();
-  }
+        PowerMock.mockStatic(CassandraAccountService.class);
+        cassandraAccountService = EasyMock.createMock(CassandraAccountService.class);
+        PowerMock.expectNew(CassandraAccountService.class).andReturn(cassandraAccountService);
+        EasyMock.expect(CassandraAccountService.getInstance()).andReturn(cassandraAccountService).anyTimes();
+    }
 
-  @Test
-  public void testSuccessfulLogIn() {
-    mockAuthenticatedMethod();
-    EasyMock.replay(cassandraAccountService);
-    PowerMock.replayAll();
+    @Test
+    public void testSuccessfulLogIn() {
+        mockAuthenticatedMethod();
+        EasyMock.replay(cassandraAccountService);
+        PowerMock.replayAll();
 
-    CassandraAuthenticationService cassandraAuthenticationService =
-        new CassandraAuthenticationService();
-    Observable<Optional<UUID>> results =
-        cassandraAuthenticationService.logIn(tc.USER_DTO.getUsername(), tc.USER_DTO.getPassword());
-    assertNotNull(results);
-    assertEquals(tc.USER_DTO.getUserId(), results.toBlocking().first().get());
-  }
+        CassandraAuthenticationService cassandraAuthenticationService = new CassandraAuthenticationService();
+        Observable<Optional<UUID>> results = cassandraAuthenticationService.logIn(tc.USER_DTO.getUsername(),
+                                                                                  tc.USER_DTO.getPassword());
+        assertNotNull(results);
+        assertEquals(tc.USER_DTO.getUserId(), results.toBlocking().first().get());
+    }
 
-  @Test
-  public void testUnsuccessfulLogIn() {
-    mockAuthenticatedMethod();
-    EasyMock.replay(cassandraAccountService);
-    PowerMock.replayAll();
+    @Test
+    public void testUnsuccessfulLogIn() {
+        mockAuthenticatedMethod();
+        EasyMock.replay(cassandraAccountService);
+        PowerMock.replayAll();
 
-    CassandraAuthenticationService cassandraAuthenticationService =
-        new CassandraAuthenticationService();
-    Observable<Optional<UUID>> results =
-        cassandraAuthenticationService.logIn(tc.USER_DTO.getUsername(), "INVALID_PASSOWRD");
-    assertNotNull(results);
-    assertFalse(results.toBlocking().first().isPresent());
-  }
+        CassandraAuthenticationService cassandraAuthenticationService = new CassandraAuthenticationService();
+        Observable<Optional<UUID>> results = cassandraAuthenticationService.logIn(tc.USER_DTO.getUsername(),
+                                                                                  "INVALID_PASSOWRD");
+        assertNotNull(results);
+        assertFalse(results.toBlocking().first().isPresent());
+    }
 
-  @Test
-  public void testResetPassword() {
-    CassandraAuthenticationService cassandraAuthenticationService =
-        new CassandraAuthenticationService();
-    Observable<Void> results =
-        cassandraAuthenticationService.resetPassword(tc.USER_DTO.getUsername());
-    assertTrue(results.isEmpty().toBlocking().first());
+    @Test
+    public void testResetPassword() {
+        CassandraAuthenticationService cassandraAuthenticationService = new CassandraAuthenticationService();
+        Observable<Void> results = cassandraAuthenticationService.resetPassword(tc.USER_DTO.getUsername());
+        assertTrue(results.isEmpty().toBlocking().first());
 
-  }
+    }
 
-  private void mockAuthenticatedMethod() {
-    EasyMock.expect(cassandraAccountService.getUser(EasyMock.anyString())).andReturn(
-        Observable.just(tc.USER_DTO));
+    private void mockAuthenticatedMethod() {
+        EasyMock.expect(cassandraAccountService.getUserByUsername(EasyMock.anyString())).andReturn(Observable.just(tc.USER_DTO));
 
-  }
+    }
 }
