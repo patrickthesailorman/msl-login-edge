@@ -14,47 +14,50 @@ import javax.ws.rs.core.Response;
 
 public class AuthenticationClient {
 
-    private static final String DEFAULT_BASE_URL = "http://msl.kenzanlabs.com:9001";
+  private static final String DEFAULT_BASE_URL = "http://msl.kenzanlabs.com:9001";
 
-    private String baseUrl;
-    private ResteasyClient client;
+  private String baseUrl;
+  private ResteasyClient client;
 
-    public AuthenticationClient() {
-        client = new ResteasyClientBuilder().build();
+  public AuthenticationClient() {
+    client = new ResteasyClientBuilder().build();
 
-        String configUrl = "file://" + System.getProperty("user.dir");
-        configUrl += "/../msl-login-edge-config/edge-config.properties";
-        String additionalUrlsProperty = "archaius.configurationSource.additionalUrls";
-        System.setProperty(additionalUrlsProperty, configUrl);
+    String configUrl = "file://" + System.getProperty("user.dir");
+    configUrl += "/../msl-login-edge-config/edge-config.properties";
+    String additionalUrlsProperty = "archaius.configurationSource.additionalUrls";
+    System.setProperty(additionalUrlsProperty, configUrl);
 
-        DynamicPropertyFactory propertyFactory = DynamicPropertyFactory.getInstance();
-        DynamicStringProperty fetchedBaseUrl = propertyFactory.getStringProperty("base_url", DEFAULT_BASE_URL);
-        baseUrl = fetchedBaseUrl.getValue();
+    DynamicPropertyFactory propertyFactory = DynamicPropertyFactory.getInstance();
+    DynamicStringProperty fetchedBaseUrl =
+        propertyFactory.getStringProperty("base_url", DEFAULT_BASE_URL);
+    baseUrl = fetchedBaseUrl.getValue();
+  }
+
+  public LoginEdgeApiResponseMessage login(String email, String password) {
+    ResteasyWebTarget target = client.target(baseUrl + "/login-edge/login");
+
+    Form form = new Form();
+    form.param("email", email);
+    form.param("password", password);
+
+    Response response =
+        target.request(MediaType.APPLICATION_JSON_TYPE).post(
+            Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
+    if (response.getStatus() != 200) {
+      throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
     }
+    return response.readEntity(LoginEdgeApiResponseMessage.class);
+  }
 
-    public LoginEdgeApiResponseMessage login(String email, String password) {
-        ResteasyWebTarget target = client.target(baseUrl + "/login-edge/login");
-
-        Form form = new Form();
-        form.param("email", email);
-        form.param("password", password);
-
-        Response response = target.request(MediaType.APPLICATION_JSON_TYPE)
-            .post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
-        if ( response.getStatus() != 200 ) {
-            throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-        }
-        return response.readEntity(LoginEdgeApiResponseMessage.class);
+  public LoginEdgeApiResponseMessage logOut() {
+    ResteasyWebTarget target = client.target(baseUrl + "/login-edge/logout");
+    Response response =
+        target.request(MediaType.APPLICATION_JSON_TYPE).post(
+            Entity.entity("", MediaType.APPLICATION_JSON));
+    if (response.getStatus() != 200) {
+      throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
     }
-
-    public LoginEdgeApiResponseMessage logOut() {
-        ResteasyWebTarget target = client.target(baseUrl + "/login-edge/logout");
-        Response response = target.request(MediaType.APPLICATION_JSON_TYPE)
-            .post(Entity.entity("", MediaType.APPLICATION_JSON));
-        if ( response.getStatus() != 200 ) {
-            throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-        }
-        return response.readEntity(LoginEdgeApiResponseMessage.class);
-    }
+    return response.readEntity(LoginEdgeApiResponseMessage.class);
+  }
 
 }

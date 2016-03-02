@@ -10,11 +10,11 @@ import java.util.UUID;
 
 public interface AuthenticationService {
 
-    /*
-     * Gets the UUID for that user if password matches
-     */
-    Observable<Optional<UUID>> logIn(String email, String password);
+  /*
+   * Gets the UUID for that user if password matches
+   */
+  Observable<Optional<UUID>> logIn(String email, String password);
 
-    Observable<Void> resetPassword(String email);
+  Observable<Void> resetPassword(String email);
 
 }
