@@ -11,33 +11,33 @@ import static org.junit.Assert.assertNotNull;
 
 public class AuthenticationClientTest {
 
-    private final String MOCK_EMAIL = "username12@kenzan.com";
-    private final String MOCK_PASSWORD = "password12";
+  private final String MOCK_EMAIL = "username12@kenzan.com";
+  private final String MOCK_PASSWORD = "password12";
 
-    private AuthenticationClient authenticationClient;
-    static Logger logger = Logger.getLogger(AuthenticationClientTest.class);
+  private AuthenticationClient authenticationClient;
+  static Logger logger = Logger.getLogger(AuthenticationClientTest.class);
 
-    @Before
-    public void init() {
-        authenticationClient = new AuthenticationClient();
-        logger.setLevel(Level.DEBUG);
-    }
+  @Before
+  public void init() {
+    authenticationClient = new AuthenticationClient();
+    logger.setLevel(Level.DEBUG);
+  }
 
-    @Test
-    public void testLogin() {
-        logger.debug("AuthenticationClient.testLogin");
-        LoginEdgeApiResponseMessage response = authenticationClient.login(MOCK_EMAIL, MOCK_PASSWORD);
-        assertNotNull(response);
-        assertEquals("login call is successful", "success", response.getMessage());
-    }
+  @Test
+  public void testLogin() {
+    logger.debug("AuthenticationClient.testLogin");
+    LoginEdgeApiResponseMessage response = authenticationClient.login(MOCK_EMAIL, MOCK_PASSWORD);
+    assertNotNull(response);
+    assertEquals("login call is successful", "success", response.getMessage());
+  }
 
-    @Test
-    public void testLogOut() {
-        logger.debug("AuthenticationClient.testLogOut");
-        LoginEdgeApiResponseMessage response = authenticationClient.logOut();
-        logger.info(response);
-        assertNotNull(response);
-        assertEquals("logout call is successful", "success", response.getMessage());
-    }
+  @Test
+  public void testLogOut() {
+    logger.debug("AuthenticationClient.testLogOut");
+    LoginEdgeApiResponseMessage response = authenticationClient.logOut();
+    logger.info(response);
+    assertNotNull(response);
+    assertEquals("logout call is successful", "success", response.getMessage());
+  }
 
 }
