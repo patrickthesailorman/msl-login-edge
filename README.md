@@ -7,12 +7,6 @@ is an example of building a swagger-enabled JAX-RS server.
 
 This example uses the [JAX-RS](https://jax-rs-spec.java.net/) framework.
 
-## Before starting
-Run the build maven script to generate swagger generated code, package local jars and instal on local repository. Run this from the `/server` directory
-```
-mvn clean compile 
-```
-
 ## Useful commands
 
 To generate sources from swagger spec
@@ -20,9 +14,14 @@ To generate sources from swagger spec
 mvn -P build clean generate-sources
 ```
 
-To run the server, please execute the following:
+To run the server on port `9001`, please execute the following:
 ```
 mvn -P dev clean jetty:run
+```
+
+You can check server is running by hitting the endpoint with a curl
+```
+curl 'http://msl.kenzanlabs.com:9001/login-edge/login' -H 'Pragma: no-cache' -H 'Origin: http://msl.kenzanlabs.com:3000' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: en,es;q=0.8,pt-BR;q=0.6,pt;q=0.4' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36' -H 'Content-Type: application/x-www-form-urlencoded' -H 'Accept: application/json, text/plain, */*' -H 'Cache-Control: no-cache' -H 'Referer: http://msl.kenzanlabs.com:3000/' -H 'Connection: keep-alive' --data 'email=username14@kenzan.com&password=password14' --compressed
 ```
 
 To format code
@@ -35,18 +34,12 @@ mvn clean formatter:format
 mvn -P no-tests clean install
 ```
 
-### RPM && JAR packaging
+### JAR packaging
 ```
 mvn -P no-tests package
 ```
 
 ##Reports
-###Surefire reports:
-```
-mvn site
-```
-report gets generated under `/target/site/index.html`
- 
 ###Cobertura
 ```
 mvn cobertura:cobertura
@@ -58,7 +51,3 @@ report gets generated under `/target/site/cobertura/index.html`
 mvn package
 ```
 report gets generated under `/target/site/jacoco`
-
-## Some dependencies required installation before running
-- msl-models
-- msl-account-data-client
