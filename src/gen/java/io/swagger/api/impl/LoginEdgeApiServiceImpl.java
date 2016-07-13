@@ -1,6 +1,8 @@
 package io.swagger.api.impl;
 
 import com.google.common.base.Optional;
+import com.kenzan.msl.account.client.services.CassandraAccountService;
+import com.kenzan.msl.server.Main;
 import com.kenzan.msl.server.services.AuthenticationService;
 import com.kenzan.msl.server.services.CassandraAuthenticationService;
 import io.swagger.api.*;
@@ -22,8 +24,8 @@ import javax.ws.rs.core.Response;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JaxRSServerCodegen", date = "2016-01-25T12:48:15.318-06:00")
 public class LoginEdgeApiServiceImpl extends LoginEdgeApiService {
 
-    private AuthenticationService authenticationServiceService = new CassandraAuthenticationService();
-    private LoginEdgeSessionToken loginEdgeSessionToken = LoginEdgeSessionToken.getInstance();
+    private AuthenticationService authenticationServiceService = new CassandraAuthenticationService(CassandraAccountService
+            .getInstance(Optional.fromNullable(Main.archaiusProperties)));
 
     @Override
     public Response login(String email, String password) throws NotFoundException {
@@ -62,7 +64,7 @@ public class LoginEdgeApiServiceImpl extends LoginEdgeApiService {
         LoginSuccessResponse loginSuccessResponse = new LoginSuccessResponse();
         loginSuccessResponse.setAuthenticated(new Date().toString());
 
-        return Response.ok().cookie(loginEdgeSessionToken.getSessionCookie(optSessionToken.get()))
+        return Response.ok().cookie(LoginEdgeSessionToken.getSessionCookie(optSessionToken.get()))
                 .entity(new LoginEdgeApiResponseMessage(LoginEdgeApiResponseMessage.OK, "success", loginSuccessResponse)).build();
     }
 
@@ -71,7 +73,7 @@ public class LoginEdgeApiServiceImpl extends LoginEdgeApiService {
         StatusResponse response = new StatusResponse();
         response.setMessage("Successfully logged out");
 
-        return Response.ok().cookie(loginEdgeSessionToken.getSessionCookie(null))
+        return Response.ok().cookie(LoginEdgeSessionToken.getSessionCookie(null))
                 .entity(new LoginEdgeApiResponseMessage(LoginEdgeApiResponseMessage.OK, "success", response)).build();
     }
 

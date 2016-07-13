@@ -8,25 +8,14 @@ import java.util.UUID;
 
 public class LoginEdgeSessionToken {
 
-    private static LoginEdgeSessionToken loginEdgeSessionToken = null;
-
-    private String tokenValue;
-
-    private LoginEdgeSessionToken() {}
-
-    public static LoginEdgeSessionToken getInstance () {
-        if (loginEdgeSessionToken == null) {
-            loginEdgeSessionToken = new LoginEdgeSessionToken( );
-        }
-        return loginEdgeSessionToken;
-    }
+    private static String tokenValue;
 
     /**
      * Updates sessionToken on each coming request
      *
      * @param req HttpServletRequest
      */
-    public void updateSessionToken(HttpServletRequest req) {
+    public static void updateSessionToken(HttpServletRequest req) {
         String sessionTokenValue = "";
         if (req.getCookies() != null) {
             Cookie[] cookies = req.getCookies();
@@ -44,7 +33,7 @@ public class LoginEdgeSessionToken {
      *
      * @return boolean
      */
-    public boolean isValidToken() {
+    public static boolean isValidToken() {
         try {
             UUID.fromString(getTokenValue());
             return true;
@@ -59,7 +48,7 @@ public class LoginEdgeSessionToken {
      * @param sessionToken value to update LoginEdgeSessionToken.value with
      * @return NewCookie
      */
-    public NewCookie getSessionCookie(UUID sessionToken) {
+    public static NewCookie getSessionCookie(UUID sessionToken) {
 
         final String PATH = "/";
         final String DOMAIN = "msl.kenzanlabs.com";
@@ -94,16 +83,15 @@ public class LoginEdgeSessionToken {
      *
      * @return Date
      */
-    private Date getExpirationDate () {
-        Date today = new Date();
-        return new Date(today.getTime() + (1000 * 60 * 60 * 24));
+    private static Date getExpirationDate () {
+        return new Date(new Date().getTime() + (1000 * 60 * 60 * 24));
     }
 
-    public String getTokenValue() {
+    public static String getTokenValue() {
         return tokenValue;
     }
 
-    public void setTokenValue(String tokenValue) {
-        this.tokenValue = tokenValue;
+    public static void setTokenValue(String tokenValue) {
+        LoginEdgeSessionToken.tokenValue = tokenValue;
     }
 }
