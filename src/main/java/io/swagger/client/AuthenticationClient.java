@@ -22,11 +22,6 @@ public class AuthenticationClient {
   public AuthenticationClient() {
     client = new ResteasyClientBuilder().build();
 
-    String configUrl = "file://" + System.getProperty("user.dir");
-    configUrl += "/../msl-login-edge-config/edge-config.properties";
-    String additionalUrlsProperty = "archaius.configurationSource.additionalUrls";
-    System.setProperty(additionalUrlsProperty, configUrl);
-
     DynamicPropertyFactory propertyFactory = DynamicPropertyFactory.getInstance();
     DynamicStringProperty fetchedBaseUrl =
         propertyFactory.getStringProperty("base_url", DEFAULT_BASE_URL);
