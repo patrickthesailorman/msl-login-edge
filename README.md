@@ -27,7 +27,7 @@ mvn -P dev clean jetty:run
 To verify that the server is running, access the following endpoint:
 
 ```
-curl 'http://msl.kenzanlabs.com:9001/login-edge/login' -H 'Pragma: no-cache' -H 'Origin: http://msl.kenzanlabs.com:3000' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: en,es;q=0.8,pt-BR;q=0.6,pt;q=0.4' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36' -H 'Content-Type: application/x-www-form-urlencoded' -H 'Accept: application/json, text/plain, */*' -H 'Cache-Control: no-cache' -H 'Referer: http://msl.kenzanlabs.com:3000/' -H 'Connection: keep-alive' --data 'email=username14@kenzan.com&password=password14' --compressed
+curl 'http://localhost:9001/login-edge/login' -H 'Pragma: no-cache' -H 'Origin: http://localhost:3000' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: en,es;q=0.8,pt-BR;q=0.6,pt;q=0.4' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36' -H 'Content-Type: application/x-www-form-urlencoded' -H 'Accept: application/json, text/plain, */*' -H 'Cache-Control: no-cache' -H 'Referer: http://localhost:3000/' -H 'Connection: keep-alive' --data 'email=username14@kenzan.com&password=password14' --compressed
 ```
 
 ## Code Formatting
