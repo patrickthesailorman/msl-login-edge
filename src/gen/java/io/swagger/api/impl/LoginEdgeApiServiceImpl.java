@@ -1,10 +1,8 @@
 package io.swagger.api.impl;
 
 import com.google.common.base.Optional;
-import com.kenzan.msl.account.client.services.CassandraAccountService;
-import com.kenzan.msl.server.Main;
-import com.kenzan.msl.server.services.AuthenticationService;
-import com.kenzan.msl.server.services.CassandraAuthenticationService;
+import com.google.inject.Inject;
+import com.kenzan.msl.login.edge.services.LoginEdgeService;
 import io.swagger.api.*;
 
 import io.swagger.model.LoginSuccessResponse;
@@ -24,8 +22,12 @@ import javax.ws.rs.core.Response;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JaxRSServerCodegen", date = "2016-01-25T12:48:15.318-06:00")
 public class LoginEdgeApiServiceImpl extends LoginEdgeApiService {
 
-    private AuthenticationService authenticationServiceService = new CassandraAuthenticationService(CassandraAccountService
-            .getInstance(Optional.fromNullable(Main.archaiusProperties)));
+    private LoginEdgeService loginEdgeService;
+
+    @Inject
+    public LoginEdgeApiServiceImpl (final LoginEdgeService loginEdgeService) {
+        this.loginEdgeService = loginEdgeService;
+    }
 
     @Override
     public Response login(String email, String password) throws NotFoundException {
@@ -45,7 +47,7 @@ public class LoginEdgeApiServiceImpl extends LoginEdgeApiService {
 
         Optional<UUID> optSessionToken;
         try {
-            optSessionToken = authenticationServiceService.logIn(email, password).toBlocking().first();
+            optSessionToken = loginEdgeService.logIn(email, password).toBlocking().first();
         }
         catch ( Exception e ) {
             e.printStackTrace();
