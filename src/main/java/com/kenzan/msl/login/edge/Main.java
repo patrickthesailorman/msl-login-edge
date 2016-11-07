@@ -1,6 +1,12 @@
 package com.kenzan.msl.login.edge;
 
 import com.google.common.base.Optional;
+import com.google.inject.Injector;
+import com.kenzan.msl.account.client.config.AccountDataClientModule;
+import com.kenzan.msl.login.edge.config.LoginEdgeModule;
+import com.kenzan.msl.login.edge.config.RestModule;
+import com.netflix.governator.guice.LifecycleInjector;
+import com.netflix.governator.lifecycle.LifecycleManager;
 import io.swagger.api.LoginEdgeApi;
 import io.swagger.api.impl.LoginEdgeApiOriginFilter;
 import org.eclipse.jetty.server.Server;
@@ -24,6 +30,15 @@ public class Main {
    */
   public static void main(String[] args) throws Exception {
 
+    Injector injector =  LifecycleInjector.builder()
+            .withModules(
+                    new AccountDataClientModule(),
+                    new LoginEdgeModule())
+            .build()
+            .createInjector();
+
+    LifecycleManager manager = injector.getInstance(LifecycleManager.class);
+
     Server jettyServer = new Server(9001);
     ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
     context.setContextPath("/");
@@ -37,11 +52,11 @@ public class Main {
         LoginEdgeApi.class.getCanonicalName());
 
     try {
-
+      manager.start();
       jettyServer.start();
       jettyServer.join();
-
     } finally {
+      manager.close();
       jettyServer.destroy();
     }
   }

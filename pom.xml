@@ -4,7 +4,7 @@
     <groupId>msl.server</groupId>
     <artifactId>msl-login-edge</artifactId>
     <packaging>jar</packaging>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
 
     <distributionManagement>
         <repository>
@@ -601,15 +601,12 @@
         <dependency>
             <groupId>msl.server</groupId>
             <artifactId>msl-common</artifactId>
-            <version>${msl-server.version}</version>
+            <version>1.1.0</version>
         </dependency>
         <dependency>
             <groupId>msl.server</groupId>
             <artifactId>msl-account-data-client</artifactId>
-            <version>1.2.0</version>
-            <!--<version>${msl-server.version}</version>-->
-            <scope>system</scope>
-            <systemPath>${project.basedir}/../msl-account-data-client/target/msl-account-data-client-1.2.0.jar</systemPath>
+            <version>${msl-server.version}</version>
         </dependency>
 
     </dependencies>
@@ -662,7 +659,7 @@
         <karyon.version>2.7.5</karyon.version>
         <karyon-governator.version>1.9.3</karyon-governator.version>
 
-        <msl-server.version>1.1.0</msl-server.version>
+        <msl-server.version>1.2.0</msl-server.version>
     </properties>
 
 </project>
