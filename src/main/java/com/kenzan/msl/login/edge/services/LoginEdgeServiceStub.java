@@ -1,10 +1,10 @@
 /*
  * Copyright 2015, Kenzan, All rights reserved.
  */
-package com.kenzan.msl.server.services;
+package com.kenzan.msl.login.edge.services;
 
 import com.google.common.base.Optional;
-import com.kenzan.msl.server.mock.LogInMockData;
+import com.kenzan.msl.login.edge.mock.LogInMockData;
 import rx.Observable;
 
 import java.util.UUID;
@@ -12,7 +12,7 @@ import java.util.UUID;
 /**
  * Implementation of the CatalogService interface that mocks the data it returns.
  */
-public class StubCatalogService implements AuthenticationService {
+public class LoginEdgeServiceStub implements LoginEdgeService {
 
   private LogInMockData logInMockData = new LogInMockData();
 

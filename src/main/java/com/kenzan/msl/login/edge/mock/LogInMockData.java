@@ -1,4 +1,4 @@
-package com.kenzan.msl.server.mock;
+package com.kenzan.msl.login.edge.mock;
 
 import io.swagger.model.LoginSuccessResponse;
 import io.swagger.model.StatusResponse;

@@ -1,25 +1,27 @@
 /*
  * Copyright 2015, Kenzan, All rights reserved.
  */
-package com.kenzan.msl.server.services;
+package com.kenzan.msl.login.edge.services;
 
 import com.google.common.base.Optional;
+import com.google.inject.Inject;
 import com.kenzan.msl.account.client.dto.UserDto;
-import com.kenzan.msl.account.client.services.CassandraAccountService;
+import com.kenzan.msl.account.client.services.AccountDataClientService;
 
 import java.util.UUID;
 import rx.Observable;
 
 /**
- * Implementation of the CassandraAuthenticationService interface that retrieves its data from a
+ * Implementation of the LoginEdgeServiceImpl interface that retrieves its data from a
  * Cassandra cluster.
  */
-public class CassandraAuthenticationService implements AuthenticationService {
+public class LoginEdgeServiceImpl implements LoginEdgeService {
 
-  private final CassandraAccountService cassandraAccountService;
+  private final AccountDataClientService accountDataClientService;
 
-  public CassandraAuthenticationService(final CassandraAccountService cassandraAccountService) {
-    this.cassandraAccountService = cassandraAccountService;
+  @Inject
+  public LoginEdgeServiceImpl(final AccountDataClientService accountDataClientService) {
+    this.accountDataClientService = accountDataClientService;
   }
 
   /**
@@ -41,7 +43,7 @@ public class CassandraAuthenticationService implements AuthenticationService {
    * @return Optional&lt;UUID&gt;
    */
   private Optional<UUID> authenticate(String username, String password) {
-    Observable<UserDto> observableUser = cassandraAccountService.getUserByUsername(username);
+    Observable<UserDto> observableUser = accountDataClientService.getUserByUsername(username);
     if (observableUser.isEmpty().toBlocking().first()) {
       return Optional.absent();
     } else {

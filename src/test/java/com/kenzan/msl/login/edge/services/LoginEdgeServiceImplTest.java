@@ -2,8 +2,7 @@ package com.kenzan.msl.login.edge.services;
 
 import com.google.common.base.Optional;
 import com.kenzan.msl.account.client.TestConstants;
-import com.kenzan.msl.account.client.services.CassandraAccountService;
-import com.kenzan.msl.server.services.CassandraAuthenticationService;
+import com.kenzan.msl.account.client.services.AccountDataClientService;
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,20 +20,15 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({CassandraAccountService.class})
-public class CassandraAuthenticationServiceTest {
+@PrepareForTest({AccountDataClientService.class})
+public class LoginEdgeServiceImplTest {
 
   private TestConstants tc = TestConstants.getInstance();
-  private CassandraAccountService cassandraAccountService;
+  private AccountDataClientService cassandraAccountService;
 
   @Before
   public void init() throws Exception {
-
-    PowerMock.mockStatic(CassandraAccountService.class);
-    cassandraAccountService = EasyMock.createMock(CassandraAccountService.class);
-    PowerMock.expectNew(CassandraAccountService.class).andReturn(cassandraAccountService);
-    EasyMock.expect(CassandraAccountService.getInstance()).andReturn(cassandraAccountService)
-        .anyTimes();
+    cassandraAccountService = EasyMock.createMock(AccountDataClientService.class);
   }
 
   @Test
@@ -43,8 +37,8 @@ public class CassandraAuthenticationServiceTest {
     EasyMock.replay(cassandraAccountService);
     PowerMock.replayAll();
 
-    CassandraAuthenticationService cassandraAuthenticationService =
-        new CassandraAuthenticationService(cassandraAccountService);
+    LoginEdgeServiceImpl cassandraAuthenticationService =
+        new LoginEdgeServiceImpl(cassandraAccountService);
     Observable<Optional<UUID>> results =
         cassandraAuthenticationService.logIn(tc.USER_DTO.getUsername(), tc.USER_DTO.getPassword());
     assertNotNull(results);
@@ -57,8 +51,8 @@ public class CassandraAuthenticationServiceTest {
     EasyMock.replay(cassandraAccountService);
     PowerMock.replayAll();
 
-    CassandraAuthenticationService cassandraAuthenticationService =
-        new CassandraAuthenticationService(cassandraAccountService);
+    LoginEdgeServiceImpl cassandraAuthenticationService =
+        new LoginEdgeServiceImpl(cassandraAccountService);
     Observable<Optional<UUID>> results =
         cassandraAuthenticationService.logIn(tc.USER_DTO.getUsername(), "INVALID_PASSOWRD");
     assertNotNull(results);
@@ -67,8 +61,8 @@ public class CassandraAuthenticationServiceTest {
 
   @Test
   public void testResetPassword() {
-    CassandraAuthenticationService cassandraAuthenticationService =
-        new CassandraAuthenticationService(cassandraAccountService);
+    LoginEdgeServiceImpl cassandraAuthenticationService =
+        new LoginEdgeServiceImpl(cassandraAccountService);
     Observable<Void> results =
         cassandraAuthenticationService.resetPassword(tc.USER_DTO.getUsername());
     assertTrue(results.isEmpty().toBlocking().first());
