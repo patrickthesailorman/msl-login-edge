@@ -1,10 +1,8 @@
 package com.kenzan.msl.login.edge;
 
-import com.google.common.base.Optional;
 import com.google.inject.Injector;
 import com.kenzan.msl.account.client.config.AccountDataClientModule;
 import com.kenzan.msl.login.edge.config.LoginEdgeModule;
-import com.kenzan.msl.login.edge.config.RestModule;
 import com.netflix.governator.guice.LifecycleInjector;
 import com.netflix.governator.lifecycle.LifecycleManager;
 import io.swagger.api.LoginEdgeApi;
@@ -16,11 +14,8 @@ import org.glassfish.jersey.servlet.ServletContainer;
 
 import javax.servlet.DispatcherType;
 import java.util.EnumSet;
-import java.util.HashMap;
 
 public class Main {
-
-  public static HashMap archaiusProperties = new HashMap<String, Optional<String>>();
 
   /**
    * Runs jetty server to expose jersey API

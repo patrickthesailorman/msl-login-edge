@@ -17,16 +17,19 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JaxRSServerCodegen", date = "2016-01-25T12:48:15.318-06:00")
 public class LoginEdgeApiServiceImpl extends LoginEdgeApiService {
 
     private LoginEdgeService loginEdgeService;
+    private LoginEdgeSessionToken loginEdgeSessionToken;
 
     @Inject
-    public LoginEdgeApiServiceImpl (final LoginEdgeService loginEdgeService) {
+    public LoginEdgeApiServiceImpl (final LoginEdgeService loginEdgeService, final LoginEdgeSessionToken loginEdgeSessionToken) {
         this.loginEdgeService = loginEdgeService;
+        this.loginEdgeSessionToken = loginEdgeSessionToken;
     }
 
     @Override
@@ -65,9 +68,13 @@ public class LoginEdgeApiServiceImpl extends LoginEdgeApiService {
 
         LoginSuccessResponse loginSuccessResponse = new LoginSuccessResponse();
         loginSuccessResponse.setAuthenticated(new Date().toString());
+        NewCookie cookie = loginEdgeSessionToken.getSessionCookie(optSessionToken.get());
+        LoginEdgeApiResponseMessage response = new LoginEdgeApiResponseMessage(LoginEdgeApiResponseMessage.OK, "success", loginSuccessResponse);
 
-        return Response.ok().cookie(LoginEdgeSessionToken.getSessionCookie(optSessionToken.get()))
-                .entity(new LoginEdgeApiResponseMessage(LoginEdgeApiResponseMessage.OK, "success", loginSuccessResponse)).build();
+        return Response.ok()
+                .cookie(cookie)
+                .entity(response)
+                .build();
     }
 
     @Override
@@ -75,7 +82,7 @@ public class LoginEdgeApiServiceImpl extends LoginEdgeApiService {
         StatusResponse response = new StatusResponse();
         response.setMessage("Successfully logged out");
 
-        return Response.ok().cookie(LoginEdgeSessionToken.getSessionCookie(null))
+        return Response.ok().cookie(loginEdgeSessionToken.getSessionCookie(null))
                 .entity(new LoginEdgeApiResponseMessage(LoginEdgeApiResponseMessage.OK, "success", response)).build();
     }
 

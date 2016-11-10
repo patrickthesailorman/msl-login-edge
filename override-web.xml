@@ -33,6 +33,15 @@
     </listener>
 
     <filter>
+        <filter-name>LoginEdgeApiOriginFilter</filter-name>
+        <filter-class>io.swagger.api.impl.LoginEdgeApiOriginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoginEdgeApiOriginFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
         <filter-name>Guice Filter</filter-name>
         <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
     </filter>
@@ -41,13 +50,4 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-
-    <filter>
-        <filter-name>LoginEdgeApiOriginFilter</filter-name>
-        <filter-class>io.swagger.api.impl.LoginEdgeApiOriginFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>LoginEdgeApiOriginFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
 </web-app>
