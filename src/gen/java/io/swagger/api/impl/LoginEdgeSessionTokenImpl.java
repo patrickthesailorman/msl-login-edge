@@ -51,7 +51,7 @@ public class LoginEdgeSessionTokenImpl implements LoginEdgeSessionToken {
     public NewCookie getSessionCookie(UUID sessionToken) {
 
         final String PATH = "/";
-        final String DOMAIN = "localhost";
+        final String DOMAIN = "local.msl.dev";
         final int VERSION = 1;
         final String COMMENT = "";
         int MAX_AGE;
