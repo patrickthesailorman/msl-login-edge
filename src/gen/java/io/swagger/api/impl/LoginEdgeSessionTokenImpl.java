@@ -8,7 +8,12 @@ import java.util.UUID;
 
 public class LoginEdgeSessionTokenImpl implements LoginEdgeSessionToken {
 
-    private static String tokenValue;
+    private String tokenValue;
+    private String domain = "localhost";
+
+    public void setDomain (String domain) {
+        this.domain = domain;
+    }
 
     /**
      * Updates sessionToken on each coming request
@@ -51,7 +56,7 @@ public class LoginEdgeSessionTokenImpl implements LoginEdgeSessionToken {
     public NewCookie getSessionCookie(UUID sessionToken) {
 
         final String PATH = "/";
-        final String DOMAIN = "local.msl.dev";
+        final String DOMAIN = domain;
         final int VERSION = 1;
         final String COMMENT = "";
         int MAX_AGE;
@@ -88,10 +93,10 @@ public class LoginEdgeSessionTokenImpl implements LoginEdgeSessionToken {
     }
 
     public String getTokenValue() {
-        return tokenValue;
+        return this.tokenValue;
     }
 
     public void setTokenValue(String tokenValue) {
-        LoginEdgeSessionTokenImpl.tokenValue = tokenValue;
+        this.tokenValue = tokenValue;
     }
 }
