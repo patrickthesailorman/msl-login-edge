@@ -1,6 +1,7 @@
 package com.kenzan.msl.login.edge.config;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.name.Names;
 import com.kenzan.msl.login.edge.services.LoginEdgeService;
 import com.kenzan.msl.login.edge.services.LoginEdgeServiceStub;
 import com.netflix.governator.guice.lazy.LazySingletonScope;
@@ -17,10 +18,13 @@ import io.swagger.api.impl.LoginEdgeSessionTokenImpl;
 public class LocalLoginEdgeModule extends AbstractModule {
     @Override
     protected void configure() {
+        bindConstant().annotatedWith(Names.named("clientPort")).to("3000");
+
         requestStaticInjection(LoginEdgeApiServiceFactory.class);
         requestStaticInjection(LoginEdgeApiOriginFilter.class);
-        bind(LoginEdgeSessionToken.class).to(LoginEdgeSessionTokenImpl.class).in(
-                LazySingletonScope.get());
+
+        bind(LoginEdgeSessionToken.class).to(LoginEdgeSessionTokenImpl.class).in(LazySingletonScope.get());
+
         bind(LoginEdgeService.class).to(LoginEdgeServiceStub.class).in(LazySingletonScope.get());
         bind(LoginEdgeApiService.class).to(LoginEdgeApiServiceImpl.class).in(LazySingletonScope.get());
     }

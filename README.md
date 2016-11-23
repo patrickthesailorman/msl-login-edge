@@ -54,6 +54,12 @@ Use the following command to package the application code:
 mvn -P no-tests package
 ```
 
+```
+java -jar msl-login-edge.jar
+-Darchaius.deployment.environment=dev \
+-Darchaius.configurationSource.additionalUrls=file://${PWD}/../msl-login-edge-config/edge-config.properties,file://${PWD}/../msl-login-data-client-config/data-client-config.properties
+```
+
 ## Testing and Reports
 
 You can use either Cobertura or EclEmma to run tests, whichever you prefer.
