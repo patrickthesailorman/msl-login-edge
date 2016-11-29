@@ -1,7 +1,6 @@
 package com.kenzan.msl.login.edge.config;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.name.Named;
 import com.google.inject.name.Names;
 import com.kenzan.msl.login.edge.services.LoginEdgeService;
 import com.kenzan.msl.login.edge.services.LoginEdgeServiceImpl;
@@ -14,15 +13,15 @@ import io.swagger.api.impl.LoginEdgeApiOriginFilter;
 import io.swagger.api.impl.LoginEdgeApiServiceImpl;
 import io.swagger.api.impl.LoginEdgeSessionToken;
 import io.swagger.api.impl.LoginEdgeSessionTokenImpl;
-import org.apache.commons.lang3.StringUtils;
-
-import java.io.File;
-import java.util.Properties;
 
 /**
+ * Login Edge Module, a support class for Modules which reduces repetition and results in a more readable configuration
+ * if no archaius.configurationSource.additionalUrls property is passed in, archaius uses default configuration. See readme to
+ * understand how to pass in these variables
+ *
  * @author Kenzan
  */
-public class LoginEdgeModule  extends AbstractModule {
+public class LoginEdgeModule extends AbstractModule {
 
     private String DEFAULT_CLIENT_PORT = "3000";
 
@@ -31,27 +30,14 @@ public class LoginEdgeModule  extends AbstractModule {
 
     @Override
     protected void configure() {
-        configureArchaius();
         bindConstant().annotatedWith(Names.named("clientPort")).to(CLIENT_PORT.get());
 
         requestStaticInjection(LoginEdgeApiServiceFactory.class);
         requestStaticInjection(LoginEdgeApiOriginFilter.class);
 
-        bind(LoginEdgeSessionToken.class).to(LoginEdgeSessionTokenImpl.class).in(
-                LazySingletonScope.get());
+        bind(LoginEdgeSessionToken.class).to(LoginEdgeSessionTokenImpl.class).in(LazySingletonScope.get());
+
         bind(LoginEdgeService.class).to(LoginEdgeServiceImpl.class).in(LazySingletonScope.get());
         bind(LoginEdgeApiService.class).to(LoginEdgeApiServiceImpl.class).in(LazySingletonScope.get());
-    }
-
-    private void configureArchaius() {
-        Properties props = System.getProperties();
-        String ENV = props.getProperty("env");
-        if (StringUtils.isEmpty(ENV) || ENV.toLowerCase().contains("local")) {
-            String configUrl = "file://" + System.getProperty("user.dir") + "/../msl-login-edge-config/edge-config.properties";
-            File f = new File(configUrl);
-            if(f.exists() && !f.isDirectory()) {
-                System.setProperty("archaius.configurationSource.additionalUrls", configUrl);
-            }
-        }
     }
 }
