@@ -22,6 +22,7 @@ public class Main {
      * @throws Exception if server doesn't start
      */
     public static void main(String[] args) throws Exception {
+        System.setProperty("archaius.deployment.applicationId","loginedge");
         Server jettyServer = new Server(9001);
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
