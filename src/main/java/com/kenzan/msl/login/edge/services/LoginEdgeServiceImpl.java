@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2015, Kenzan, All rights reserved.
  */
@@ -9,6 +10,7 @@ import com.kenzan.msl.account.client.dto.UserDto;
 import com.kenzan.msl.account.client.services.AccountDataClientService;
 
 import java.util.UUID;
+import org.mindrot.jbcrypt.BCrypt;
 import rx.Observable;
 
 /**
@@ -48,7 +50,7 @@ public class LoginEdgeServiceImpl implements LoginEdgeService {
       return Optional.absent();
     } else {
       UserDto user = observableUser.toBlocking().first();
-      if (user.getPassword().equals(password)) {
+      if (checkPassword(password.trim(), user.getPassword().trim()))  {
         return Optional.of(user.getUserId());
       }
     }
@@ -64,4 +66,20 @@ public class LoginEdgeServiceImpl implements LoginEdgeService {
   public Observable<Void> resetPassword(String email) {
     return Observable.empty();
   }
+
+  /**
+   *
+   * @param passwordPlaintext
+   * @param storedHash
+   * @return
+     */
+  public boolean checkPassword(String passwordPlaintext, String storedHash) {
+
+    if(null == storedHash || !storedHash.startsWith("$2a$")) {
+      return false;
+    }
+
+    return BCrypt.checkpw(passwordPlaintext, storedHash);
+  }
+
 }

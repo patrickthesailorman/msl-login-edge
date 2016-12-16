@@ -38,4 +38,8 @@ public class LoginEdgeServiceStub implements LoginEdgeService {
     return Observable.empty();
   }
 
+  public boolean checkPassword(String password_plaintext, String stored_hash) {
+    return true;
+  }
+
 }
