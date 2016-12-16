@@ -17,4 +17,6 @@ public interface LoginEdgeService {
 
   Observable<Void> resetPassword(String email);
 
+  boolean checkPassword(String password_plaintext, String stored_hash);
+
 }
