@@ -706,6 +706,13 @@
             <version>${msl-server.version}</version>
         </dependency>
 
+        <!-- Encryption -->
+        <dependency>
+          <groupId>de.svenkubiak</groupId>
+          <artifactId>jBCrypt</artifactId>
+          <version>0.4.1</version>
+        </dependency>
+
     </dependencies>
 
     <properties>
